@@ -1,0 +1,142 @@
+public class SistemaAgua {
+    // Declaración de variables
+    private int plantasDesalinizadoras; // Número de plantas desalinizadoras
+    private int embalses; // Número de embalses
+    private int represas; // Número de represas hidroeléctricas
+    private int tuberias; // Número de tuberías para la distribución de agua
+    private int sensores; // Número de sensores para monitorear el nivel de agua
+    private double aguaDesalinizada; // Cantidad de agua desalinizada
+    private double aguaEmbalsada; // Cantidad de agua almacenada en embalses
+    private double aguaGenerada; // Cantidad de agua utilizada para generar energía
+    private double nivelAgua; // Nivel de agua en el sistema
+    private int temporada; // Temporada actual (1: Temporada seca, 2: Temporada lluviosa)
+    private double precipitacion; // Cantidad de precipitación
+
+    // Constructor para inicializar las variables
+    public SistemaAgua(int plantasDesalinizadoras, int embalses, int represas, int tuberias, int sensores) {
+        this.plantasDesalinizadoras = plantasDesalinizadoras;
+        this.embalses = embalses;
+        this.represas = represas;
+        this.tuberias = tuberias;
+        this.sensores = sensores;
+        this.aguaDesalinizada = 0;
+        this.aguaEmbalsada = 0;
+        this.aguaGenerada = 0;
+        this.nivelAgua = 0;
+        this.temporada = 1; // Inicialmente temporada seca
+        this.precipitacion = 0;
+    }
+
+    // Método para el proceso de desalinización
+    public void procesoDesalinizacion() {
+        for (int i = 0; i < plantasDesalinizadoras; i++) {
+            // Simula la desalinización de agua en cada planta
+            aguaDesalinizada += desalinizarAgua(i);
+        }
+    }
+
+    // Método para la distribución de agua a embalses
+    public void distribuirAgua() {
+        for (int j = 0; j < embalses; j++) {
+            // Simula la distribución de agua desalinizada a los embalses
+            aguaEmbalsada += distribuirAgua(aguaDesalinizada, j);
+        }
+    }
+
+    // Método para la generación de energía hidroeléctrica
+    public void generarEnergia() {
+        for (int k = 0; k < represas; k++) {
+            // Simula la generación de energía utilizando el agua embalsada
+            aguaGenerada += generarEnergia(aguaEmbalsada, k);
+        }
+    }
+
+    // Método para el monitoreo y control de nivel de agua
+    public void controlarNivelAgua(int dias) {
+        for (int tiempo = 0; tiempo < dias; tiempo++) {
+            // Mide el nivel de agua utilizando los sensores
+            nivelAgua = medirNivelAgua(sensores);
+            if (temporada == 1) { // Menor precipitación en temporada seca
+                precipitacion = 0.5;
+            } else { // Mayor precipitación en temporada lluviosa
+                precipitacion = 1.5;
+            }
+            // Actualiza el nivel de agua con la precipitación
+            nivelAgua += precipitacion;
+            if (nivelAgua > limiteSuperior()) {
+                // Desagua el exceso de agua si el nivel supera el límite superior
+                desaguarExceso(nivelAgua);
+            }
+            if (nivelAgua < limiteInferior()) {
+                // Bombea agua desalinizada si el nivel está por debajo del límite inferior
+                bombearAgua(aguaDesalinizada);
+            }
+            if (tiempo % 180 == 0) {
+                // Alterna entre temporada seca y lluviosa cada 180 días
+                temporada = 3 - temporada;
+            }
+        }
+    }
+
+    // Método para mostrar los resultados finales
+    public void mostrarResultados() {
+        System.out.println("Agua Desalinizada: " + aguaDesalinizada);
+        System.out.println("Agua embalsada: " + aguaEmbalsada);
+        System.out.println("Agua generada: " + aguaGenerada);
+        System.out.println("Nivel de agua estabilizado: " + nivelAgua);
+    }
+
+    // Métodos simulados para las operaciones del algoritmo
+
+    // Simula el proceso de desalinización de agua
+    private double desalinizarAgua(int planta) {
+        return 1000; // Valor simulado
+    }
+
+    // Simula la distribución de agua desalinizada a un embalse
+    private double distribuirAgua(double aguaDesalinizada, int embalse) {
+        return aguaDesalinizada / embalses; // Valor simulado
+    }
+
+    // Simula la generación de energía utilizando el agua embalsada
+    private double generarEnergia(double aguaEmbalsada, int represa) {
+        return aguaEmbalsada / represas; // Valor simulado
+    }
+
+    // Simula la medición del nivel de agua utilizando sensores
+    private double medirNivelAgua(int sensores) {
+        return Math.random() * 100; // Valor simulado
+    }
+
+    // Simula la acción de desaguar el exceso de agua
+    private void desaguarExceso(double nivelAgua) {
+        System.out.println("Desaguando exceso de agua: " + nivelAgua);
+    }
+
+    // Simula la acción de bombear agua desalinizada
+    private void bombearAgua(double aguaDesalinizada) {
+        System.out.println("Bombeando agua desalinizada: " + aguaDesalinizada);
+    }
+
+    // Devuelve el límite superior del nivel de agua
+    private double limiteSuperior() {
+        return 80; // Valor simulado
+    }
+
+    // Devuelve el límite inferior del nivel de agua
+    private double limiteInferior() {
+        return 20; // Valor simulado
+    }
+
+    // Método principal para ejecutar el programa
+    public static void main(String[] args) {
+        // Crear una instancia de SistemaAgua con los parámetros especificados
+        SistemaAgua sistema = new SistemaAgua(5, 10, 6, 10, 15);
+        // Ejecutar los procesos
+        sistema.procesoDesalinizacion();
+        sistema.distribuirAgua();
+        sistema.generarEnergia();
+        sistema.controlarNivelAgua(365);
+        sistema.mostrarResultados();
+    }
+}
